@@ -110,4 +110,10 @@ class UsuariosPago(models.Model):
     pref = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'Usuario {self.usuario}, metodo {self.metodo}'
+        salida = f'Usuario {self.usuario}, metodo {self.metodo}'
+        if self.pref:
+            salida+=f' pref: Si'
+        else:
+            salida += f' pref: No'
+
+        return salida

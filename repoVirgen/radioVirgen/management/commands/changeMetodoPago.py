@@ -1,7 +1,9 @@
 from django.core.management import BaseCommand
 from django.db.utils import DatabaseError, OperationalError
-from radioVirgen.models import Usuario, Podcast, Programa, Reproduccion, LikePrograma, LikePodcast, ListaPodcastPendientes, MetodoPago, UsuariosPago
+from radioVirgen.models import Usuario, Podcast, Programa, Reproduccion, LikePrograma, LikePodcast, \
+    ListaPodcastPendientes, MetodoPago, UsuariosPago
 
+#ESTE NO LO HE TERMINADO
 class Command(BaseCommand):
     help = 'Listar métodos de pago de un usuario por su ID'
 
@@ -12,13 +14,24 @@ class Command(BaseCommand):
             help='ID del usuario',
             required=True
         )
+        parser.add_argument(
+            '--mid',
+            type=int,
+            help='ID del método de pago',
+            required=True
+        )
 
     def handle(self, *args, **kwargs):
         try:
             usuario_id = kwargs['uid']
+            metodo_id = kwargs['mid']
 
             try:
+                encontrado = False
                 metodos = UsuariosPago.objects.filter(usuario=Usuario.objects.get(id=usuario_id))
+
+                for metodo in metodos:
+                    if
             except UsuariosPago.DoesNotExist:
                 self.stderr.write("Este usuario no tiene métodos de pago.")
                 return
