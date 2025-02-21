@@ -83,3 +83,25 @@ class LikePodcast(models.Model):
 
     def __str__(self):
         return f'Usuario {self.usuario} podcast {self.podcast}'
+
+class MetodoPago(models.Model):
+    tipo = models.CharField(max_length=80)
+    numTarjeta = models.CharField(max_length=20,null=True,blank=True)
+    cvc = models.CharField(max_length=3, null=True, blank=True)
+    nombreTitular = models.CharField(max_length=80, null=True, blank=True)
+    email = models.CharField(max_length=50, null=True, blank=True)
+    numCuenta = models.CharField(max_length=30, null=True, blank=True)
+    tlf = models.CharField(max_length=20, null=True, blank=True)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(tipo__in=["Tarjeta", "PayPal", "Transferencia", "Bizum"]), #Si, soy un chulito y he puesto Bizum también
+                name="check_tipo_pago_values"
+            )
+        ]
+
+class UsuariosPago(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='usuarioMetPago')
+    metodo = models.ForeignKey(MetodoPago, on_delete=models.CASCADE, related_name='metodoUsuario')
+    pref = models.BooleanField(default=False)
