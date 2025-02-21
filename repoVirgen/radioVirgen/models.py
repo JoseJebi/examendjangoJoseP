@@ -86,12 +86,12 @@ class LikePodcast(models.Model):
 
 class MetodoPago(models.Model):
     tipo = models.CharField(max_length=80)
-    numTarjeta = models.CharField(max_length=20,null=True,blank=True)
-    cvc = models.CharField(max_length=3, null=True, blank=True)
-    nombreTitular = models.CharField(max_length=80, null=True, blank=True)
-    email = models.CharField(max_length=50, null=True, blank=True)
-    numCuenta = models.CharField(max_length=30, null=True, blank=True)
-    tlf = models.CharField(max_length=20, null=True, blank=True)
+    numTarjeta = models.CharField(max_length=20,null=True,blank=True, default=None)
+    cvc = models.CharField(max_length=3, null=True, blank=True, default=None)
+    nombreTitular = models.CharField(max_length=80, null=True, blank=True, default=None)
+    email = models.CharField(max_length=50, null=True, blank=True, default=None)
+    numCuenta = models.CharField(max_length=30, null=True, blank=True, default=None)
+    tlf = models.CharField(max_length=20, null=True, blank=True, default=None)
 
     class Meta:
         constraints = [
@@ -101,7 +101,13 @@ class MetodoPago(models.Model):
             )
         ]
 
+    def __str__(self):
+        return f'tipo {self.tipo}'
+
 class UsuariosPago(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='usuarioMetPago')
     metodo = models.ForeignKey(MetodoPago, on_delete=models.CASCADE, related_name='metodoUsuario')
     pref = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'Usuario {self.usuario}, metodo {self.metodo}'
